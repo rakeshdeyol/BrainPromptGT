@@ -17,4 +17,4 @@ Please check `baseline.sh` on how to run the project.
 
 ## Contact
 
-If you have any questions, please feel free to reach out at `jiaxing003@e.ntu.edu.sg`.
+If you have any questions, please feel free to reach out at `rakeshdeyol868@gmail.com`.
