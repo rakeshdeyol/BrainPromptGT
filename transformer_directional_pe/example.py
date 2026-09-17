@@ -15,6 +15,7 @@ def make_directed_graph(batch_size, num_nodes):
 
 if __name__ == "__main__":
     torch.manual_seed(7)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     batch_size = 4
     num_nodes = 8
     model = DirectionalTransformerClassifier(
@@ -26,15 +27,16 @@ if __name__ == "__main__":
         num_classes=2,
         walk_steps=3,
         dropout=0.1,
-    )
+    ).to(device)
 
-    node_features = torch.randn(batch_size, num_nodes, 5)
-    adjacency = make_directed_graph(batch_size, num_nodes)
+    node_features = torch.randn(batch_size, num_nodes, 5, device=device)
+    adjacency = make_directed_graph(batch_size, num_nodes).to(device)
     logits, attentions = model(node_features, adjacency, return_attention=True)
 
     assert logits.shape == (batch_size, 2)
     assert len(attentions) == 2
     assert attentions[0].shape == (batch_size, 4, num_nodes, num_nodes)
+    print("device:", device)
     print("logits:", tuple(logits.shape))
     print("attention:", tuple(attentions[0].shape))
     print("standalone directional Transformer: OK")
